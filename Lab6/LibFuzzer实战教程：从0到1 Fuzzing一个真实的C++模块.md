@@ -8,6 +8,10 @@
 
 **LibFuzzer** 是一个内置于 LLVM/Clang 编译器中的、覆盖率引导的模糊测试引擎。它非常适合 Fuzzing C/C++ 库和模块。
 
+**对于模糊测试来说，windows会有很多bug，一般linux系统没有bug，且配置过程较为简单，所以我们在windows上提供了详细的教程，同时也提供了linux的版本，不过强烈推荐大家使用Linux版本的教程。**
+
+**对于每一个“步骤”，都有Windows和Linux两个教程，如果你看到了🖥️的图标，说明这是Windows版本的教程，可以直接下拉直到看到🐧的图标**
+
 
 
 ### 我们的实验目标
@@ -23,11 +27,11 @@
 
 ## 步骤 1: 准备环境 
 
-## 安装 Clang：
+## 🖥️ Windows：
+
+#### 安装 Clang：
 
 Fuzzing 严重依赖现代 C++ 编译器。**Clang 是必需的**，因为它内置了 LibFuzzer 和 AddressSanitizer (ASan)。
-
-### Windows安装示例：
 
 **步骤 1：访问 LLVM 下载页面**
 
@@ -108,8 +112,6 @@ Fuzzing 严重依赖现代 C++ 编译器。**Clang 是必需的**，因为它内
 
 现在，你就可以在 Windows 上使用 Clang 来编译你的 Fuzzer 了。
 
-
-
 ## 安装Visual Studio
 
 从 LLVM 官网下载的 Clang默认是为 **MSVC** (Microsoft Visual C++) 工具链构建的。
@@ -165,9 +167,40 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
 
 
 
+#### 🐧 Linux
+
+在 Linux (以 Ubuntu/Debian 为例) 上，环境准备要简单得多。你不需要单独下载安装包，也不需要 Visual Studio。使用系统的包管理器 (apt) 即可一次性安装所有必需品。
+
+- **步骤 1：打开终端 (Terminal)**
+
+- **步骤 2：安装 Clang 和 build-essential** `build-essential` 包含了 `g++` 编译器、C++ 标准库头文件和 `make` 等构建工具，Clang 会自动使用它们。
+
+  ```
+  # 1. 更新你的包列表
+  sudo apt update
+  
+  # 2. 安装 Clang, 相关的 libfuzzer 工具, 以及 C++ 构建套件
+  sudo apt install clang build-essential
+  ```
+
+  这个命令会同时安装 Clang 编译器、LibFuzzer 工具链以及 C++ 标准库/头文件。
+
+- **步骤 3：验证安装** 在同一个终端中，输入以下命令：
+
+  ```
+  clang --version
+  clang++ --version
+  ```
+
+  如果你看到 Clang 的版本信息，就说明安装成功了。你可以在任何标准终端中继续操作。
+
+
+
 ## 步骤 2: 准备目标代码
 
 现在，我们来创建一个专门用于 Fuzzing 的工作目录。
+
+### 🖥️ Windows
 
 1. **创建一个单独的文件夹**：
 
@@ -201,7 +234,36 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
 
 
 
+### 🐧 Linux
+
+创建一个专门用于 Fuzzing 的工作目录。
+
+```
+# 1. 创建目录
+mkdir fuzz_lru_test
+cd fuzz_lru_test
+```
+
+把测试的目标文件放到文件夹中： (从鸿蒙比赛官网下载 `socperf_lru_cache.h`)
+
+假设文件下载到了你的 `~/Downloads` 目录，你可以使用 `cp` 命令将其复制到当前目录：
+
+```
+cp ~/Downloads/socperf_lru_cache.h .
+```
+
+现在，你的目录结构如下 (使用 `ls` 命令查看)：
+
+```
+fuzz_lru_test/
+└── socperf_lru_cache.h
+```
+
+
+
 ## 步骤 3: 分析 Fuzz "攻击面"
+
+**(此步骤在 Windows 和 Linux 上相同)**
 
 我们的目标是 `SocPerfLRUCache` 类。LibFuzzer 提供的是**原始字节流** (`const uint8_t *Data, size_t Size`)。我们必须将这些字节“翻译”成对 `put` 和 `get` 的调用。
 
@@ -216,6 +278,8 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
 
 
 ## 步骤 4: 编写 Fuzz Driver
+
+**(此步骤在 Windows 和 Linux 上相同)**
 
 Fuzz Driver 是连接 LibFuzzer 和目标代码的“胶水”。
 
@@ -304,6 +368,8 @@ fuzz_lru_test/
 
 ## 步骤 5: 编译 Fuzzer
 
+### 🖥️ Windows
+
 这是最关键的一步。我们将使用 `clang++` 并启用所有必要的 "Sanitizers"（卫生工具）来查找 Bug。
 
 打开你的终端，**确保你在 `fuzz_lru_test` 目录下**:
@@ -344,11 +410,43 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
 
 如果有其他输出，可以暂时忽略，一般不影响运行
 
+
+
+#### 🐧 Linux
+
+1. **打开你的标准终端**。 (不需要特殊的命令提示符)
+
+2. **进入到你的文件夹目录下**：
+
+   ```
+   cd /path/to/your/fuzz_lru_test 
+   # 例如: cd ~/fuzz_lru_test
+   ```
+
+3. **运行编译命令**： 我们使用一个更健壮的命令，**同时启用 AddressSanitizer (ASan) 和 UndefinedBehaviorSanitizer (UBSan)**。
+
+   ```
+   clang++ -g -O1 -fsanitize=fuzzer,address,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru
+   ```
+
+**命令分解**：
+
+- `clang++`, `-g`, `-O1`, `-std=c++17`, `fuzz_lru.cpp`：与 Windows 相同。
+- `-fsanitize=fuzzer,address,undefined`：**核心！**
+  - `fuzzer`：链接 LibFuzzer 引擎。
+  - `address`：开启 AddressSanitizer (ASan)，检测内存错误 (如缓冲区溢出、释放后使用等)。
+  - `undefined`：开启 UBSan，检测未定义行为。
+- `-o fuzz_lru`：**区别点**。将输出的可执行文件命名为 `fuzz_lru` (Linux 不使用 `.exe` 后缀)。
+
+(编译成功后，终端同样会安静地返回提示符)
+
 ------
 
 
 
 ## 步骤 6: 运行 Fuzzer
+
+### 🖥️ Windows
 
 1. **创建语料库 (Corpus)**： Fuzzer 需要一个目录来存放它发现的“有趣”的输入。
 
@@ -390,9 +488,45 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
 
 ------
 
+#### 🐧 Linux
+
+1. **创建语料库 (Corpus)**： (命令相同)
+
+   ```
+   mkdir corpus
+   ```
+
+2. **开始 Fuzzing！** **区别点**：在 Linux 上，你需要使用 `./` 来执行当前目录下的程序。
+
+   ```
+   # 运行 Fuzzer
+   ./fuzz_lru corpus/
+   ```
+
+3. **观察输出**： (输出格式与 Windows 相同)
+
+   ```
+   INFO: Seed: 123456789
+   ...
+   #2        INITED cov: 10 ft: 11 corp: 1/1b exec/s: 0 rss: 28Mb
+   #4        NEW    cov: 12 ft: 13 corp: 2/3b lim: 4 exec/s: 0 rss: 28Mb L: 2/2 MS: 1 ChangeByte-
+   ...
+   ```
+
+4. **让它运行**： 你可以按 `Ctrl+C` 停止它，或者使用参数：
+
+   ```
+   # 运行 Fuzzer 60 秒
+   ./fuzz_lru corpus/ -max_total_time=60
+   ```
+
+
+
 
 
 ## 步骤 7: 分析结果
+
+(此步骤在 Windows 和 Linux 上相同)
 
 你有两种可能的结果：
 
@@ -417,6 +551,8 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
 为了验证我们的 Fuzzer 设置确实能有效发现 Bug，我们可以故意在 `socperf_lru_cache.h` 中引入一个简单的 Bug，然后看 Fuzzer 能否快速找到它。
 
 ### 8.1 手动添加一个 Bug
+
+(此步骤在 Windows 和 Linux 上相同)
 
 我们将添加一个非常经典的 Bug：**空指针解引用 (Null Pointer Dereference)**。这种 Bug 会导致程序立即崩溃，非常容易被 Fuzzer 发现。
 
@@ -453,13 +589,25 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
 
 ### 8.2 重新编译 Fuzzer (带 Bug 的版本)
 
+### 🖥️ Windows
+
 回到你的“**开发者命令提示符**”窗口，使用这段命令，重新编译你的 Fuzzer（这会把带有 Bug 的代码编译进去）：
 
 ```
 clang++ -g -O1 -fsanitize=fuzzer,undefined -fno-sanitize-recover=all -std=c++17 fuzz_lru.cpp -o fuzz_lru.exe
 ```
 
+### 🐧 Linux
+
+回到你的终端，使用 Linux 的编译命令重新编译 (同样添加 `address` 和 `-fno-sanitize-recover=all`)：
+
+```
+clang++ -g -O1 -fsanitize=fuzzer,address,undefined -fno-sanitize-recover=all -std=c++17 fuzz_lru.cpp -o fuzz_lru
+```
+
 ### 8.3 清理语料库并重新运行 Fuzzer (寻找 Bug)
+
+### 🖥️ Windows
 
 为了让 Fuzzer 更快地找到新 Bug，最好从一个空的语料库开始。
 
@@ -481,7 +629,22 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -fno-sanitize-recover=all -std=c++17 
    .\fuzz_lru.exe corpus/
    ```
 
+### 🐧 Linux
+
+```
+# （推荐） 删除旧的语料库文件夹 (Linux 使用 rm -rf)：
+rm -rf corpus
+
+# （必须） 重新创建语料库文件夹：
+mkdir corpus
+
+# 运行 Fuzzer！
+./fuzz_lru corpus/
+```
+
 ### 8.4 分析崩溃报告！
+
+(此步骤在 Windows 和 Linux 上的输出几乎相同)
 
 这一次，Fuzzer 应该会在**几秒钟内**（甚至更快）**自动停止**，并且**在屏幕上打印出类似这样的错误报告**：
 
@@ -513,6 +676,8 @@ artifact_prefix='./'; Test unit written to ./crash-a1b2c3d4e5f6a1b2c3d4e5f6
 
 
 ### 8.5 验证 Crash 文件
+
+### 🖥️ Windows
 
 现在，回到你的命令行窗口 (`fuzz_lru_test` 目录下)，输入 `dir`：
 
@@ -547,6 +712,22 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior .\socperf_lru_cache.h:50
 **成功！** 你现在已经验证了你的 Fuzzer 设置能够有效地发现 Bug！
 
 
+
+### 🐧 Linux
+
+回到你的命令行窗口，输入 `ls`：
+
+```
+ls -l crash-*
+```
+
+你应该会看到一个新文件，例如 `crash-a1b2c3d4e5f6a1b2c3d4e5f6`。 你可以用这个文件来精确复现崩溃 (使用 `./`)：
+
+```
+./fuzz_lru crash-bfd69a2f755407a9a6ac4a5a1c09386becf2f5ae
+```
+
+(它会立刻再次打印出同样的错误报告)
 
 ## 总结
 
