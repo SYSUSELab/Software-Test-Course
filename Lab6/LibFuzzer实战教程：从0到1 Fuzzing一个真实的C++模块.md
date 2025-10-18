@@ -8,9 +8,9 @@
 
 **LibFuzzer** 是一个内置于 LLVM/Clang 编译器中的、覆盖率引导的模糊测试引擎。它非常适合 Fuzzing C/C++ 库和模块。
 
-**对于模糊测试来说，windows会有很多bug，一般linux系统没有bug，且配置过程较为简单，所以我们在windows上提供了详细的教程，同时也提供了linux的版本，不过强烈推荐大家使用Linux版本的教程。**
+**<span style="color:red;">对于模糊测试来说，windows会有很多bug，一般linux系统没有bug，且配置过程较为简单，所以我们在windows上提供了详细的教程，同时也提供了linux的版本，不过强烈推荐大家使用Linux版本的教程。</span>**
 
-**对于每一个“步骤”，都有Windows和Linux两个教程，如果你看到了🖥️的图标，说明这是Windows版本的教程，可以直接下拉直到看到🐧的图标**
+**<span style="color:red;">对于每一个“步骤”，都有Windows和Linux两个教程，如果你看到了🖥️的图标，说明这是Windows版本的教程，可以直接下拉直到看到🐧的图标</span>**
 
 
 
