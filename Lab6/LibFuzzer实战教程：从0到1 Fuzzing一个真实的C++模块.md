@@ -219,8 +219,6 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
    2. **从GitHub链接下载**：`https://github.com/SYSUSELab/Software-Test-Course/tree/main/Lab6`
    3. 按照下面的教程手动下载代码文件
 
-   **请注意**：此步骤仅为获取实验所需的统一代码，大家**无需**报名参加该比赛。
-
    打开鸿蒙比赛官网：https://devbounty.openharmony.cn/index
 
    点击“10月赛事”
@@ -228,7 +226,7 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
    <img src="C:\Users\aa\AppData\Roaming\Typora\typora-user-images\image-20251018140057450.png" alt="image-20251018140057450" style="zoom:50%;" />
 
    点击进入第一个代码仓库**（本次实验以仓库一作为示例）**
-   
+
    <img src="C:\Users\aa\AppData\Roaming\Typora\typora-user-images\image-20251018140202874.png" alt="image-20251018140202874" style="zoom:50%;" />
    
    将这个代码下载下来，这个代码没有项目中的其他代码依赖，较为简单，因为我们作为实验教学示例。
