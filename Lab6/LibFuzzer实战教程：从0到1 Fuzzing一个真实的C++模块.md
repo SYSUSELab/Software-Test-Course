@@ -211,6 +211,8 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
 
 2. **把测试的目标文件放到文件夹中**：
 
+   **由于本次实验和华为的比赛主题相同，所以我们选择一个比赛中的开源项目作为测试目标，可以通过下面的方式手动下载代码，也可以直接从群里发送的附件“fuzz_lru_test.zip”中直接获取完整代码，或者通过这个链接从GitHub上下载“https://github.com/SYSUSELab/Software-Test-Course/tree/main/Lab6”，这个步骤只是获取一个统一的代码，不需要大家报名比赛。**
+
    打开鸿蒙比赛官网：https://devbounty.openharmony.cn/index
 
    点击“10月赛事”
@@ -226,7 +228,7 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
    <img src="C:\Users\aa\AppData\Roaming\Typora\typora-user-images\image-20251018140403172.png" alt="image-20251018140403172" style="zoom:50%;" />
 
    现在，我们的目录结构如下：
-
+   
    ```
    fuzz_lru_test/
    └── socperf_lru_cache.h
