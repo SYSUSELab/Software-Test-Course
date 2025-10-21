@@ -27,7 +27,7 @@
 
 ## 步骤 1: 准备环境 
 
-## 🖥️ Windows：
+### 🖥️ Windows：
 
 #### 安装 Clang：
 
@@ -112,7 +112,7 @@ Fuzzing 严重依赖现代 C++ 编译器。**Clang 是必需的**，因为它内
 
 现在，你就可以在 Windows 上使用 Clang 来编译你的 Fuzzer 了。
 
-## 安装Visual Studio
+#### 安装Visual Studio
 
 从 LLVM 官网下载的 Clang默认是为 **MSVC** (Microsoft Visual C++) 工具链构建的。
 
@@ -126,13 +126,13 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
 
 以下是安装教程：
 
-#### 第一步：下载 Visual Studio 安装器 (Installer)
+##### 第一步：下载 Visual Studio 安装器 (Installer)
 
 1. 打开浏览器，访问 Visual Studio 官方下载页面： https://visualstudio.microsoft.com/zh-hans/downloads/
 2. 在页面上，找到 **"Visual Studio 2022"**。
 3. 在 **"Community" (社区版)** 选项下方，点击 **"免费下载"** 按钮。
 
-#### 第二步：运行安装器并选择 "工作负载"
+##### 第二步：运行安装器并选择 "工作负载"
 
 1. 双击你刚下载的 `.exe` 文件。
 
@@ -146,7 +146,7 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
 
    <img src="C:\Users\aa\AppData\Roaming\Typora\typora-user-images\image-20251018145436495.png" alt="image-20251018145436495" style="zoom:50%;" />
 
-#### 第三步：(可选) 检查安装详细信息
+##### 第三步：(可选) 检查安装详细信息
 
 在你勾选了 "使用 C++ 的桌面开发" 之后，可以看一眼右侧的 "安装详细信息" (Installation details) 栏：
 
@@ -155,19 +155,19 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
 
 > **注意：** 通常情况下，你只要勾选了 "使用 C++ 的桌面开发" 这个主工作负载，上述这些必需的组件都会被自动勾选，你一般不需要额外操作。
 
-#### 第四步：开始安装
+##### 第四步：开始安装
 
 1. 在窗口的右下角，你可以选择安装位置。
 2. 点击右下角的 **"安装"** (Install) 按钮。
 3. Visual Studio Installer 会开始下载和安装你选择的组件。
 
-#### 第五步：安装完成与启动
+##### 第五步：安装完成与启动
 
 安装完成后，安装器会提示你重启电脑。**建议你立即重启**，以确保所有环境变量都生效。
 
 
 
-#### 🐧 Linux
+### 🐧 Linux
 
 在 Linux (以 Ubuntu/Debian 为例) 上，环境准备要简单得多。你不需要单独下载安装包，也不需要 Visual Studio。使用系统的包管理器 (apt) 即可一次性安装所有必需品。
 
@@ -228,13 +228,13 @@ Clang 本身只是一个编译器（第1点），因此，需要下载第2、3�
    点击进入第一个代码仓库**（本次实验以仓库一作为示例）**
 
    <img src="C:\Users\aa\AppData\Roaming\Typora\typora-user-images\image-20251018140202874.png" alt="image-20251018140202874" style="zoom:50%;" />
-   
+
    将这个代码下载下来，这个代码没有项目中的其他代码依赖，较为简单，因为我们作为实验教学示例。
-   
+
    <img src="C:\Users\aa\AppData\Roaming\Typora\typora-user-images\image-20251018140403172.png" alt="image-20251018140403172" style="zoom:50%;" />
-   
+
    现在，我们的目录结构如下：
-   
+
    ```
    fuzz_lru_test/
    └── socperf_lru_cache.h
@@ -420,7 +420,7 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
 
 
 
-#### 🐧 Linux
+### 🐧 Linux
 
 1. **打开你的标准终端**。 (不需要特殊的命令提示符)
 
@@ -461,14 +461,14 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
    ```
    mkdir corpus
    ```
-   
+
 2. **开始 Fuzzing！**
 
    ```
    # 运行 Fuzzer，'corpus' 是它存放和读取输入的目录
    .\fuzz_lru.exe corpus/
    ```
-   
+
 3. **观察输出**： 你将看到 LibFuzzer 开始运行，每秒执行成千上万次：
 
    ```
@@ -496,7 +496,7 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
 
 ------
 
-#### 🐧 Linux
+### 🐧 Linux
 
 1. **创建语料库 (Corpus)**： (命令相同)
 
@@ -597,7 +597,7 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
 
 ### 8.2 重新编译 Fuzzer (带 Bug 的版本)
 
-### 🖥️ Windows
+#### 🖥️ Windows
 
 回到你的“**开发者命令提示符**”窗口，使用这段命令，重新编译你的 Fuzzer（这会把带有 Bug 的代码编译进去）：
 
@@ -605,7 +605,7 @@ clang++ -g -O1 -fsanitize=fuzzer,undefined -std=c++17 fuzz_lru.cpp -o fuzz_lru.e
 clang++ -g -O1 -fsanitize=fuzzer,undefined -fno-sanitize-recover=all -std=c++17 fuzz_lru.cpp -o fuzz_lru.exe
 ```
 
-### 🐧 Linux
+#### 🐧 Linux
 
 回到你的终端，使用 Linux 的编译命令重新编译 (同样添加 `address` 和 `-fno-sanitize-recover=all`)：
 
@@ -615,7 +615,7 @@ clang++ -g -O1 -fsanitize=fuzzer,address,undefined -fno-sanitize-recover=all -st
 
 ### 8.3 清理语料库并重新运行 Fuzzer (寻找 Bug)
 
-### 🖥️ Windows
+#### 🖥️ Windows
 
 为了让 Fuzzer 更快地找到新 Bug，最好从一个空的语料库开始。
 
@@ -637,7 +637,7 @@ clang++ -g -O1 -fsanitize=fuzzer,address,undefined -fno-sanitize-recover=all -st
    .\fuzz_lru.exe corpus/
    ```
 
-### 🐧 Linux
+#### 🐧 Linux
 
 ```
 # （推荐） 删除旧的语料库文件夹 (Linux 使用 rm -rf)：
@@ -685,7 +685,7 @@ artifact_prefix='./'; Test unit written to ./crash-a1b2c3d4e5f6a1b2c3d4e5f6
 
 ### 8.5 验证 Crash 文件
 
-### 🖥️ Windows
+#### 🖥️ Windows
 
 现在，回到你的命令行窗口 (`fuzz_lru_test` 目录下)，输入 `dir`：
 
@@ -721,7 +721,7 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior .\socperf_lru_cache.h:50
 
 
 
-### 🐧 Linux
+#### 🐧 Linux
 
 回到你的命令行窗口，输入 `ls`：
 
