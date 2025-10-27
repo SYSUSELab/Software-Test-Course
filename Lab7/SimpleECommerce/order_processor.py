@@ -141,6 +141,6 @@ def process_order(order_details):
         "subtotal": subtotal,
         "discount": discount_amount,
         "shipping_cost": shipping_cost,
-        "final_total": round(subtotal, 2),
+        "final_total": final_total,
         "items": processed_items
     }
