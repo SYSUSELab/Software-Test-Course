@@ -5,22 +5,26 @@ from order_processor import process_order
 # --- 测试用例数据库 ---
 # 学生只需要在这里添加和修改测试用例即可
 test_cases = [
-    ("Initial_High_Value_Order",
+    ("Initial_Cover_Bug1_But_Pass",
      {
-         "customer_id": "C123",
+         "customer_id": "C_Multi_Item",
          "is_member": False,
-         "items": [("P001", 1)],
-         "coupon_code": None,
-         "shipping_address": {"city": "Beijing"},
+         "items": [
+             ("P002", 2), # 商品条目1
+             ("P002", 1)  # 商品条目2
+         ],
+         "coupon_code": "HALFPRICE",
+         "shipping_address": {"city": "Guangzhou"},
          "is_weekday": True
      },
      {
          "status": "Success",
-         "subtotal": 1200.00,
-         "discount": 0.0,
+         "subtotal": 75.0,
+         "discount": 37.5, 
          "shipping_cost": 0.0,
-         "final_total": 1200.00
+         "final_total": 37.50 
      }),
+
     # --- 在下方开始补充你为提升覆盖率而设计的白盒测试用例 ---
 ]
 
